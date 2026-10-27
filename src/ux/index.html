@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FastAPI Minimal Starter</title>
+  <title>To-Do Demo App</title>
   <script>
     (() => {
       const param = new URLSearchParams(window.location.search).get("clawpilotTheme");
@@ -80,15 +80,62 @@
       font: inherit;
       cursor: pointer;
     }
-    pre {
-      font-family: Consolas, "Courier New", Courier, monospace;
+    button:hover {
+      background: var(--cp-accent-hover);
+    }
+    button:disabled {
+      opacity: 0.6;
+      cursor: default;
+    }
+    form, li {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+    input {
+      padding: 8px;
+      border: 1px solid var(--cp-border);
+      border-radius: 0.625rem;
+      background: var(--cp-surface);
+      color: var(--cp-text);
+      font: inherit;
+    }
+    ul {
+      max-width: 640px;
+      padding: 0;
+      list-style: none;
+    }
+    li {
+      margin-bottom: 8px;
+      padding: 16px;
+      border: 1px solid var(--cp-border);
+      border-radius: 0.625rem;
+      background: var(--cp-surface);
+    }
+    .todo-title {
+      flex: 1;
+      overflow-wrap: anywhere;
+    }
+    .complete .todo-title {
+      color: var(--cp-text-muted);
+      text-decoration: line-through;
+    }
+    #result {
+      color: var(--cp-danger);
     }
   </style>
 </head>
 <body>
-  <h1>FastAPI Minimal Starter</h1>
-  <button id="health-button" type="button">Check health</button>
-  <pre id="result" aria-live="polite"></pre>
+  <h1>To-Do Demo App</h1>
+  <form id="todo-form">
+    <label for="todo-title">New to-do</label>
+    <input id="todo-title" name="title" type="text" required>
+    <button type="submit">Add</button>
+  </form>
+  <p id="result" role="alert"></p>
+  <p id="empty" aria-live="polite">Loading to-dos...</p>
+  <ul id="todo-list" aria-label="To-dos"></ul>
   <script src="app.js"></script>
 </body>
 </html>
