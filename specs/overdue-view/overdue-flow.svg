@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="720" viewBox="0 0 960 720" role="img" aria-labelledby="title description">
+  <title id="title">Overdue to-do request flow</title>
+  <desc id="description">Four layers: UI requests overdue items from routes. Routes supply the server-local date to service. Service reads all items from storage and filters incomplete dated items whose due date is before the supplied today. Results return through routes to UI.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#495057"/>
+    </marker>
+  </defs>
+  <rect width="960" height="720" fill="#ffffff"/>
+  <g font-family="Segoe UI, Arial, sans-serif" fill="#000000" text-anchor="middle">
+    <text x="480" y="40" font-size="24" font-weight="600">Overdue to-do request</text>
+
+    <rect x="240" y="75" width="480" height="90" rx="10" fill="#dee2e6" stroke="#495057" stroke-width="2"/>
+    <text x="480" y="110" font-size="20" font-weight="600">UI: Overdue view</text>
+    <text x="480" y="140" font-size="16">Request results; render list or empty state</text>
+
+    <rect x="240" y="240" width="480" height="100" rx="10" fill="#a5d8ff" stroke="#1864ab" stroke-width="2"/>
+    <text x="480" y="273" font-size="20" font-weight="600">Routes: GET /api/todos?overdue=true</text>
+    <text x="480" y="301" font-size="16">Obtain server-local today once per request</text>
+    <text x="480" y="325" font-size="16">Pass today explicitly to service</text>
+
+    <rect x="240" y="415" width="480" height="110" rx="10" fill="#b2f2bb" stroke="#2f9e44" stroke-width="2"/>
+    <text x="480" y="448" font-size="20" font-weight="600">Service: overdue logic (today parameter)</text>
+    <text x="480" y="477" font-size="16">Read items; keep incomplete, dated items</text>
+    <text x="480" y="503" font-size="16">with due_date &lt; today; never read the clock</text>
+
+    <rect x="240" y="600" width="480" height="85" rx="10" fill="#dee2e6" stroke="#495057" stroke-width="2"/>
+    <text x="480" y="634" font-size="20" font-weight="600">Storage: in-memory repository</text>
+    <text x="480" y="663" font-size="16">Return all stored items; no date logic</text>
+  </g>
+  <g fill="none" stroke="#495057" stroke-width="2" marker-end="url(#arrow)">
+    <path d="M 340 165 L 340 234"/>
+    <path d="M 340 340 L 340 409"/>
+    <path d="M 340 525 L 340 594"/>
+    <path d="M 620 600 L 620 531"/>
+    <path d="M 620 415 L 620 346"/>
+    <path d="M 620 240 L 620 171"/>
+  </g>
+  <g font-family="Segoe UI, Arial, sans-serif" fill="#000000" font-size="15">
+    <text x="250" y="204">Request</text>
+    <text x="250" y="382">today</text>
+    <text x="250" y="567">Read</text>
+    <text x="638" y="567">All items</text>
+    <text x="638" y="382">Filtered items</text>
+    <text x="638" y="204">200 JSON</text>
+  </g>
+</svg>
