@@ -1,9 +1,16 @@
-from fastapi import APIRouter, HTTPException, Response, status
+from datetime import date
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 
 from app import service
-from app.models import Todo, TodoCreate
+from app.models import Todo, TodoCreate, TodoDueDateUpdate
 
 router = APIRouter(prefix="/api")
+
+
+def get_today() -> date:
+    return date.today()
 
 
 @router.get("/health")
@@ -12,7 +19,11 @@ def health() -> dict[str, str]:
 
 
 @router.get("/todos")
-def list_todos() -> list[Todo]:
+def list_todos(
+    today: Annotated[date, Depends(get_today)], overdue: bool = False
+) -> list[Todo]:
+    if overdue:
+        return service.list_overdue_todos(today=today)
     return service.list_todos()
 
 
@@ -25,6 +36,14 @@ def create_todo(todo: TodoCreate) -> Todo:
 def complete_todo(id: int) -> Todo:
     try:
         return service.complete_todo(id)
+    except service.TodoNotFoundError as error:
+        raise HTTPException(status_code=404, detail=str(error)) from error
+
+
+@router.patch("/todos/{id}/due-date")
+def update_due_date(id: int, update: TodoDueDateUpdate) -> Todo:
+    try:
+        return service.update_due_date(id, update)
     except service.TodoNotFoundError as error:
         raise HTTPException(status_code=404, detail=str(error)) from error
 
