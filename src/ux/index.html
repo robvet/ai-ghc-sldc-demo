@@ -87,6 +87,18 @@
       opacity: 0.6;
       cursor: default;
     }
+    .views {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .views button[aria-pressed="false"] {
+      background: var(--cp-surface);
+      color: var(--cp-text);
+    }
+    .views button[aria-pressed="false"]:hover {
+      background: var(--cp-surface-soft);
+    }
     form, li {
       display: flex;
       flex-wrap: wrap;
@@ -131,8 +143,14 @@
   <form id="todo-form">
     <label for="todo-title">New to-do</label>
     <input id="todo-title" name="title" type="text" required>
+    <label for="todo-due-date">Due date (optional)</label>
+    <input id="todo-due-date" name="due_date" type="date">
     <button type="submit">Add</button>
   </form>
+  <div class="views" role="group" aria-label="To-do views">
+    <button type="button" data-view="all" aria-pressed="true">All</button>
+    <button type="button" data-view="overdue" aria-pressed="false">Overdue</button>
+  </div>
   <p id="result" role="alert"></p>
   <p id="empty" aria-live="polite">Loading to-dos...</p>
   <ul id="todo-list" aria-label="To-dos"></ul>

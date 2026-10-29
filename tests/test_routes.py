@@ -1,5 +1,6 @@
 from collections.abc import Iterator
 from datetime import date
+from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
@@ -146,20 +147,30 @@ def test_delete_already_deleted_todo(client):
     assert response.status_code == 404
 
 
-def test_static_ui(client):
+def test_static_ui(client: TestClient) -> None:
     response = client.get("/")
 
     assert response.status_code == 200
     assert "To-Do Demo App" in response.text
     assert 'id="todo-form"' in response.text
     assert 'id="todo-list"' in response.text
+    assert '<label for="todo-due-date">Due date (optional)</label>' in response.text
+    assert '<input id="todo-due-date" name="due_date" type="date">' in response.text
+    assert 'role="group" aria-label="To-do views"' in response.text
+    assert 'data-view="all" aria-pressed="true">All</button>' in response.text
+    assert 'data-view="overdue" aria-pressed="false">Overdue</button>' in response.text
 
 
-def test_static_javascript(client):
+def test_static_javascript(client: TestClient) -> None:
     response = client.get("/app.js")
 
     assert response.status_code == 200
     assert "/api/todos" in response.text
+    assert "/api/todos?overdue=true" in response.text
+    assert "/due-date" in response.text
+    assert response.text == (
+        Path(__file__).resolve().parents[1] / "src/ux/app.js"
+    ).read_text()
 
 
 @pytest.mark.parametrize("date_fields", [{}, {"due_date": None}])
