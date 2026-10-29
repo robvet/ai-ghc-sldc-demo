@@ -1,3 +1,4 @@
+from datetime import date
 from itertools import count
 
 from app.models import Todo
@@ -15,8 +16,10 @@ def get(todo_id: int) -> Todo | None:
     return todo.model_copy() if todo is not None else None
 
 
-def add(title: str) -> Todo:
-    todo = Todo(id=next(_ids), title=title, is_complete=False)
+def add(title: str, due_date: date | None = None) -> Todo:
+    todo = Todo(
+        id=next(_ids), title=title, is_complete=False, due_date=due_date
+    )
     _todos[todo.id] = todo.model_copy()
     return todo
 
